@@ -52,14 +52,12 @@ export default function cdn({
       )
         return;
 
-      const resolved = `vite-cdn:${name}`;
-
-      modules.set(resolved, {
+      modules.set(name, {
         path,
         pkg,
       });
 
-      return resolved;
+      return name;
     },
     load(id) {
       const info = modules.get(id);
