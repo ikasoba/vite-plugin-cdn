@@ -5,8 +5,8 @@ export interface PackageMeta {
   version: string;
 }
 
-export const resolve = (name: string) =>
-  new Promise<PackageMeta | undefined>((resolveFn, rejectFn) =>
+export const resolve = (name: string): Promise<PackageMeta | undefined> =>
+  new Promise((resolveFn, rejectFn) =>
     _resolve(name, (e, _, meta) => {
       if (e) return rejectFn(e);
 

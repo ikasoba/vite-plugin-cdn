@@ -15,6 +15,8 @@ export default defineConfig({
 });
 ```
 
+# about
+
 vite-cdn refers to esm.sh by default, but it can also refer to cdn such as skypack.
 
 ```ts
@@ -39,6 +41,31 @@ export default defineConfig({
           ? `https://esm.sh/preact@${version}/${path ?? ""}`
           : `https://cdn.skypack.dev/${name}@${version}/${path ?? ""}`;
       }
+    })
+  ],
+});
+```
+
+You can explicitly select or exclude packages to be loaded from cdn.
+
+```ts
+export default defineConfig({
+  plugins: [
+    cdn({
+      // By default, all packages are loaded from cdn.
+      packages: [ <package-name>, ... ]
+    })
+  ],
+});
+
+// or
+
+export default defineConfig({
+  plugins: [
+    cdn({
+      // Packages specified here are not loaded from cdn,
+      // but are bundled by vite in many cases.
+      excludes: [ <package-name>, ... ]
     })
   ],
 });

@@ -8,11 +8,9 @@ export interface CdnPluginOptions {
    * example: `https://esm.sh/:name@:version`
    */
   pattern: string | FormatFn;
+  excludes?: null | string[];
+  packages: "all" | string[];
 }
-
-export const defaultOptions: CdnPluginOptions = {
-  pattern: "https://esm.sh/:name@:version/:path",
-};
 
 export const createFormatFn =
   (pattern: string): FormatFn =>
@@ -23,8 +21,10 @@ export const createFormatFn =
       .replace(":path", path);
 
 export default function cdn({
-  pattern,
-}: CdnPluginOptions = defaultOptions): Plugin {
+  pattern = "https://esm.sh/:name@:version/:path",
+  packages = "all",
+  excludes,
+}: Partial<CdnPluginOptions> = {}): Plugin {
   let modules = new Map<string, { path?: string; pkg: PackageMeta }>();
 
   const format =
@@ -35,12 +35,10 @@ export default function cdn({
   return {
     name: "vite-cdn",
     enforce: "pre",
-    apply(config, env) {
-      console.log(config, env);
-      return true;
-    },
     async resolveId(name) {
-      const pkgName = name.match(/^[\w-]+|^@[\w-]+\/[\w-]+/)?.[0];
+      const pkgName = name.match(
+        /^[a-z0-9][a-z0-9_.-]*|^@[a-z0-9][a-z0-9_.-]*+\/[a-z0-9][a-z0-9_.-]*/i
+      )?.[0];
       if (pkgName == null) return;
 
       const path = name.slice(pkgName.length).replace(/^\/+/, "") || undefined;
@@ -48,7 +46,9 @@ export default function cdn({
       const pkg = await resolve(pkgName).catch(() => null);
       if (
         pkg == null ||
-        (pkg.name == "vite" && path == "modulepreload-polyfill")
+        (pkg.name == "vite" && path == "modulepreload-polyfill") ||
+        (excludes && excludes.some((x) => pkg.name == x)) ||
+        (packages != "all" && !packages.some((x) => pkg.name == x))
       )
         return;
 
