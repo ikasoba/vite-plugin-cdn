@@ -1,12 +1,12 @@
 <h1>
-<p align="center">vite-cdn📦</p>
+<p align="center">vite-plugin-cdn📦</p>
 </h1>
 
 <p align="center">Plugin to use javascript package cdn in vite.</p>
 
 ```ts
 import { defineConfig } from "vite";
-import cdn from "@ikasoba000/vite-cdn";
+import cdn from "@ikasoba000/vite-plugin-cdn";
 
 export default defineConfig({
   plugins: [
