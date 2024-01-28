@@ -6,7 +6,7 @@
 
 ```ts
 import { defineConfig } from "vite";
-import preact from "@ikasoba000/vite-cdn";
+import cdn from "@ikasoba000/vite-cdn";
 
 export default defineConfig({
   plugins: [

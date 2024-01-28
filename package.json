@@ -13,6 +13,9 @@
   ],
   "keywords": [],
   "author": "https://github.com/ikasoba",
+  "repository": {
+    "url": "https://github.com/ikasoba/vite-cdn"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.9",
