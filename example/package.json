@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.8.1",
+    "vite": "^5.0.12",
+    "vite-plugin-singlefile": "^1.0.0"
+  },
+  "dependencies": {
+    "preact": "^10.19.3"
+  }
+}
