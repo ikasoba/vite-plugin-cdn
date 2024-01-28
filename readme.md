@@ -17,7 +17,7 @@ export default defineConfig({
 
 # about
 
-vite-cdn refers to esm.sh by default, but it can also refer to cdn such as skypack.
+vite-plugin-cdn refers to esm.sh by default, but it can also refer to cdn such as skypack.
 
 ```ts
 export default defineConfig({
