@@ -33,7 +33,7 @@ export default function cdn({
       : format;
 
   return {
-    name: "vite-cdn",
+    name: "vite:cdn",
     enforce: "pre",
     async resolveId(name) {
       const pkgName = name.match(
