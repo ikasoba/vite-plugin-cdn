@@ -24,7 +24,7 @@ export default defineConfig({
   plugins: [
     cdn({
       // :name, :version, and :path are variable items.
-      pattern: "https://cdn.skypack.dev/:name@:version/:path"
+      format: "https://cdn.skypack.dev/:name@:version/:path"
     })
   ],
 });
@@ -36,7 +36,7 @@ The pattern can also specify a function.
 export default defineConfig({
   plugins: [
     cdn({
-      pattern(name: string, version: string, path?: string) {
+      format(name: string, version: string, path?: string) {
         return name == "react"
           ? `https://esm.sh/preact@${version}/${path ?? ""}`
           : `https://cdn.skypack.dev/${name}@${version}/${path ?? ""}`;
@@ -53,7 +53,7 @@ export default defineConfig({
   plugins: [
     cdn({
       // By default, all packages are loaded from cdn.
-      packages: [ <package-name>, ... ]
+      includes: [ <package-name>, ... ]
     })
   ],
 });
