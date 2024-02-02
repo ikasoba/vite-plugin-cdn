@@ -5,7 +5,7 @@ export type FormatFn = (name: string, version: string, path?: string) => string;
 
 export interface CdnPluginOptions {
   /**
-   * example: `https://esm.sh/:name@:version`
+   * example: `https://esm.sh/:name@:version/:path`
    */
   format: string | FormatFn;
   exclude: string[];
@@ -47,7 +47,7 @@ export default function cdn({
       if (
         pkg == null ||
         (pkg.name == "vite" && path == "modulepreload-polyfill") ||
-        (exclude.some((x) => pkg.name == x)) ||
+        exclude.some((x) => pkg.name == x) ||
         (include != "all" && !include.some((x) => pkg.name == x))
       )
         return;
