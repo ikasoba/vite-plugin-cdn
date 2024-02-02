@@ -7,9 +7,9 @@ export interface CdnPluginOptions {
   /**
    * example: `https://esm.sh/:name@:version`
    */
-  pattern: string | FormatFn;
-  excludes?: null | string[];
-  packages: "all" | string[];
+  format: string | FormatFn;
+  exclude: string[];
+  include: "all" | string[];
 }
 
 export const createFormatFn =
@@ -21,16 +21,16 @@ export const createFormatFn =
       .replace(":path", path);
 
 export default function cdn({
-  pattern = "https://esm.sh/:name@:version/:path",
-  packages = "all",
-  excludes,
+  format = "https://esm.sh/:name@:version/:path",
+  include = "all",
+  exclude = [],
 }: Partial<CdnPluginOptions> = {}): Plugin {
   let modules = new Map<string, { path?: string; pkg: PackageMeta }>();
 
-  const format =
-    typeof pattern == "string"
-      ? createFormatFn(pattern.replace(/\/+$/, ""))
-      : pattern;
+  const formatFn =
+    typeof format == "string"
+      ? createFormatFn(format.replace(/\/+$/, ""))
+      : format;
 
   return {
     name: "vite-cdn",
@@ -47,8 +47,8 @@ export default function cdn({
       if (
         pkg == null ||
         (pkg.name == "vite" && path == "modulepreload-polyfill") ||
-        (excludes && excludes.some((x) => pkg.name == x)) ||
-        (packages != "all" && !packages.some((x) => pkg.name == x))
+        (exclude.some((x) => pkg.name == x)) ||
+        (include != "all" && !include.some((x) => pkg.name == x))
       )
         return;
 
@@ -65,7 +65,7 @@ export default function cdn({
 
       const { path, pkg } = info;
 
-      const url = format(pkg.name, pkg.version, path);
+      const url = formatFn(pkg.name, pkg.version, path);
 
       return `export * from ${JSON.stringify(url)};`;
     },
@@ -77,7 +77,7 @@ export default function cdn({
             tag: "link",
             attrs: {
               rel: "modulepreload",
-              href: format(pkg.name, pkg.version, path),
+              href: formatFn(pkg.name, pkg.version, path),
             },
             injectTo: "head-prepend",
           };
