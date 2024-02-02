@@ -23,14 +23,14 @@ vite-plugin-cdn refers to esm.sh by default, but it can also refer to cdn such a
 export default defineConfig({
   plugins: [
     cdn({
-      // :name, :version, and :path are specifiers for substitution.
+      // :name, :version, and :path are variable items.
       pattern: "https://cdn.skypack.dev/:name@:version/:path"
     })
   ],
 });
 ```
 
-A function can also be specified for a pattern.
+The pattern can also specify a function.
 
 ```ts
 export default defineConfig({
